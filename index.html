@@ -148,6 +148,39 @@
         font-weight: 600;
       }
 
+      .build-details {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem 1rem;
+        margin: 1rem 0;
+        color: var(--muted);
+      }
+
+      .checksum {
+        margin: 1rem 0 0;
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+
+      .checksum code {
+        display: block;
+        margin-top: 0.4rem;
+        padding: 0.7rem;
+        overflow-wrap: anywhere;
+        border: 1px solid #343438;
+        border-radius: 0.65rem;
+        background: #0b0b0c;
+        color: var(--text);
+        font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+        user-select: all;
+      }
+
+      .install-note {
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.55;
+      }
+
       footer {
         padding: 2rem 0 3.5rem;
         color: var(--muted);
@@ -176,10 +209,36 @@
           last page.
         </p>
         <div class="cta-row">
-          <a class="btn btn-primary" href="https://github.com/danbyumagic/partita" target="_blank" rel="noreferrer">View Source</a>
-          <a class="btn btn-secondary" href="#roadmap">See Roadmap</a>
+          <a class="btn btn-primary" href="downloads/partita-1.1-7.apk" download>Download Android APK</a>
+          <a class="btn btn-secondary" href="https://github.com/danbyumagic/partita" target="_blank" rel="noreferrer">View Source</a>
         </div>
       </header>
+
+      <section id="download">
+        <h2>Android Development Preview</h2>
+        <p>
+          Download the signed, optimized Partita 1.1 APK directly. This preview is intended for testing
+          before the Google Play release.
+        </p>
+        <div class="build-details" aria-label="Build details">
+          <span>Version 1.1 (build 7)</span>
+          <span>Android 8.0 or later</span>
+          <span>58.8 MiB</span>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="downloads/partita-1.1-7.apk" download>Download Partita 1.1</a>
+          <a class="btn btn-secondary" href="downloads/partita-1.1-7.apk.sha256">Checksum file</a>
+        </div>
+        <p class="install-note">
+          This APK is distributed outside Google Play. Android may ask you to allow installs from your
+          browser or Files app before installation.
+        </p>
+        <p class="checksum">
+          SHA-256
+          <code>521f02e364c0a92958a5c54fbe68ebb183a804d8ad481a422d6c2f2f161f373b</code>
+        </p>
+        <p class="status">Signed release build verified July 27, 2026</p>
+      </section>
 
       <section>
         <h2>Why Partita</h2>
@@ -202,10 +261,11 @@
       <section id="roadmap">
         <h2>Current Build Status</h2>
         <p>
-          Core app architecture is in place with Room, Compose, score import, and viewer progress tracking.
-          Library and full-screen viewer UI are actively being finalized.
+          The Android development build includes score import, library organization, multiple reading
+          layouts, annotations, setlists, performance tools, voice notes, backups, and IMSLP browsing.
+          Public-release testing and polish are still in progress.
         </p>
-        <p class="status">Status: In active development</p>
+        <p class="status">Status: Preview available; in active development</p>
       </section>
 
       <footer>

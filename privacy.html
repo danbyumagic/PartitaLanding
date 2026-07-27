@@ -116,7 +116,7 @@
       <header class="top">
         <a class="back" href="./">Back to homepage</a>
         <h1>Privacy Policy</h1>
-        <p class="updated">Last updated: May 8, 2026</p>
+        <p class="updated">Last updated: July 27, 2026</p>
       </header>
 
       <section class="card">
@@ -137,15 +137,22 @@
           <li>Library metadata such as title, composer, and setlist information</li>
           <li>Preferences such as display and tool settings</li>
           <li>Your last-viewed page for each score</li>
+          <li>Voice notes you explicitly record and anchor to score pages</li>
         </ul>
       </section>
 
       <section class="card">
         <h2>Network Activity</h2>
         <p>
-          Partita does not use analytics SDKs, ad SDKs, or tracking SDKs. If and when external music-library
-          integrations are used from within the app, requests are sent directly to those third-party services.
-          Partita does not proxy those requests through its own servers.
+          Partita connects to IMSLP when you search, browse, preview, or download music from inside the app.
+          It also uses Google Firebase Analytics for aggregate feature usage and Firebase Crashlytics for
+          crash and reliability diagnostics. Optional Smart Fingerings support may download a handwriting
+          recognition model from Google.
+        </p>
+        <p>
+          Partita does not intentionally send score titles, composer names, filenames or paths, search text,
+          PDF contents, annotation contents, or voice-note contents to Firebase. The current Android build
+          does not use advertising features or personalized ads.
         </p>
       </section>
 
@@ -157,7 +164,7 @@
           <li>Location data</li>
           <li>Contacts</li>
           <li>Messages</li>
-          <li>Microphone recordings</li>
+          <li>The contents of imported scores, annotations, or voice notes for analytics</li>
           <li>Usage analytics linked to your identity</li>
         </ul>
       </section>
@@ -174,11 +181,19 @@
           <tbody>
             <tr>
               <td>Internet</td>
-              <td>Used only for app features that require fetching online resources.</td>
+              <td>Used for IMSLP, Firebase diagnostics and analytics, and optional recognition-model delivery.</td>
             </tr>
             <tr>
               <td>Storage access (system file picker)</td>
               <td>Lets you import PDF files and export backups you explicitly choose.</td>
+            </tr>
+            <tr>
+              <td>Microphone</td>
+              <td>Requested only when you choose to record a page-anchored voice note.</td>
+            </tr>
+            <tr>
+              <td>Notifications</td>
+              <td>Used for background IMSLP download progress on supported Android versions.</td>
             </tr>
           </tbody>
         </table>
