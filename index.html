@@ -342,6 +342,9 @@
         background: url("assets/ipad-frame.png") center / 100% 100% no-repeat;
         content: "";
         pointer-events: none;
+        /* Match the 905 × 1280 Android captures without stretching or cropping them. */
+        transform: scaleX(0.934);
+        transform-origin: center;
       }
 
       .screen-card-primary {
