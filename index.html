@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#111111" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
     <title>Partita | A score library for serious musicians</title>
     <meta
       name="description"
@@ -79,26 +81,13 @@
       }
 
       .brand-mark {
-        position: relative;
-        display: inline-block;
+        display: block;
+        flex: 0 0 auto;
         width: 2rem;
         height: 2rem;
-        border: 1px solid rgba(200, 185, 154, 0.38);
         border-radius: 0.35rem;
-        background: #27231d;
+        object-fit: cover;
       }
-
-      .brand-mark span {
-        position: absolute;
-        width: 0.37rem;
-        height: 0.37rem;
-        border-radius: 50%;
-        background: var(--blue);
-      }
-
-      .brand-mark span:nth-child(1) { top: 0.48rem; left: 0.48rem; }
-      .brand-mark span:nth-child(2) { top: 0.48rem; right: 0.48rem; background: var(--ink); }
-      .brand-mark span:nth-child(3) { bottom: 0.48rem; left: 0.81rem; background: var(--ink); }
 
       .nav-links {
         display: flex;
@@ -881,7 +870,7 @@
     <header class="site-header">
       <div class="wrap nav">
         <a class="brand" href="#top" aria-label="Partita home">
-          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <img class="brand-mark" src="assets/partita-icon.png" alt="" width="32" height="32" />
           <span>Partita</span>
         </a>
         <nav class="nav-links" aria-label="Primary navigation">
