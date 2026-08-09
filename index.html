@@ -300,40 +300,48 @@
         min-height: 0;
       }
 
-      .screen-card {
+      .screen-card,
+      .media-shell,
+      .ipad-frame {
         position: relative;
         width: 100%;
-        height: auto;
-        aspect-ratio: 0.707;
-        overflow: hidden;
-        border: 0.62rem solid #181818;
-        border-radius: 1.15rem;
-        background: #090909;
-        box-shadow: 0 0 0 1px #383838, 0 0.8rem 1.5rem rgba(0, 0, 0, 0.28);
+        aspect-ratio: 2286 / 3168;
+        overflow: visible;
+        background: transparent;
       }
 
-      .screen-card img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: top;
+      .screen-card img,
+      .media-shell img,
+      .ipad-frame img {
+        position: absolute;
+        top: 6.85%;
+        left: 5.25%;
+        z-index: 1;
+        width: 89.5%;
+        height: 85.32%;
+        object-fit: contain;
+        object-position: center;
+        border: 0;
+        border-radius: 0;
+        background: #f6f6fb;
+        box-shadow: none;
       }
 
       .screen-card::before,
       .media-shell::before,
       .ipad-frame::before {
+        display: none;
+      }
+
+      .screen-card::after,
+      .media-shell::after,
+      .ipad-frame::after {
         position: absolute;
-        top: 0.22rem;
-        left: 50%;
-        z-index: 4;
-        width: 0.32rem;
-        height: 0.32rem;
-        border: 1px solid #050505;
-        border-radius: 50%;
-        background: #3a3a3a;
-        box-shadow: inset 0 0 0 1px #242424;
+        inset: 0;
+        z-index: 2;
+        background: url("assets/ipad-frame.png") center / 100% 100% no-repeat;
         content: "";
-        transform: translateX(-50%);
+        pointer-events: none;
       }
 
       .screen-card-primary {
@@ -341,10 +349,6 @@
         width: min(76%, 330px);
         height: auto;
         margin: 0;
-      }
-
-      .screen-card::after {
-        display: none;
       }
 
       .screen-card-primary figcaption {
@@ -465,24 +469,6 @@
         content: "";
       }
 
-      .media-shell {
-        position: relative;
-        overflow: hidden;
-        padding: 0.55rem;
-        border: 0.62rem solid #181818;
-        border-radius: 1.15rem;
-        background: #090909;
-        box-shadow: 0 0 0 1px #383838, 0 0.8rem 1.5rem rgba(0, 0, 0, 0.28);
-      }
-
-      .media-shell img {
-        width: 100%;
-        aspect-ratio: 0.707;
-        object-fit: cover;
-        object-position: top;
-        border-radius: 0.65rem;
-      }
-
       .media-label {
         margin: 0.9rem 0 0 0.25rem;
         color: var(--ink-faint);
@@ -538,30 +524,8 @@
         margin: 0;
       }
 
-      .ipad-frame {
-        position: relative;
-        overflow: hidden;
-        padding: 0.55rem;
-        border: 0.62rem solid #181818;
-        border-radius: 1.15rem;
-        background: #090909;
-        box-shadow: 0 0 0 1px #383838, 0 0.8rem 1.5rem rgba(0, 0, 0, 0.28);
-      }
-
       .context-media figure:nth-child(2) {
         margin-top: 3.5rem;
-      }
-
-      .context-media img,
-      .discovery-media img,
-      .composer-media img {
-        width: 100%;
-        aspect-ratio: 0.707;
-        object-fit: cover;
-        object-position: top;
-        border: 0;
-        border-radius: 0.65rem;
-        box-shadow: none;
       }
 
       .context-media figcaption,
@@ -805,10 +769,6 @@
 
         .hero-stage {
           margin-top: 0.5rem;
-        }
-
-        .screen-card {
-          border-width: 0.4rem;
         }
 
         .screen-card-primary {
