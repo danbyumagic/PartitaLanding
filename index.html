@@ -3,37 +3,47 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Partita | Score Viewer for Serious Musicians</title>
+    <meta name="theme-color" content="#111111" />
+    <title>Partita | A score library for serious musicians</title>
     <meta
       name="description"
-      content="Partita is a clean, fast Android score-viewing app for conservatory students and professional musicians."
+      content="Partita is a serious Android score library and practice workspace for conservatory students and professional musicians."
     />
     <style>
       :root {
-        --bg: #111111;
-        --bg-soft: #1c1c1e;
-        --text: #f3efe6;
-        --muted: #c2b9a9;
-        --accent: #c8b99a;
+        --ink: #f3efe6;
+        --ink-soft: #c2b9a9;
+        --ink-faint: #8d877c;
         --line: #2d2d30;
-        --ok: #8dc891;
+        --blue: #c8b99a;
+        --blue-dark: #a99772;
+        --warm: #1c1b19;
+        --white: #f3efe6;
+        --radius-sm: 0.35rem;
+        --radius-md: 0.6rem;
+        --radius-lg: 0.75rem;
       }
 
       * {
         box-sizing: border-box;
       }
 
-      html,
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
         margin: 0;
-        padding: 0;
-        font-family: "Avenir Next", "Segoe UI", sans-serif;
-        color: var(--text);
-        background:
-          radial-gradient(circle at 20% 15%, #2a2419 0%, transparent 34%),
-          radial-gradient(circle at 80% 5%, #1f1a12 0%, transparent 32%),
-          linear-gradient(180deg, #111111 0%, #0c0c0c 100%);
-        min-height: 100%;
+        min-width: 320px;
+        color: var(--ink);
+        background: #111111;
+        font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
       }
 
       a {
@@ -41,245 +51,1086 @@
       }
 
       .wrap {
-        width: min(1080px, 92vw);
+        width: min(1080px, calc(100% - 3rem));
         margin: 0 auto;
       }
 
-      header {
-        padding: 5rem 0 3rem;
+      .site-header {
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(243, 239, 230, 0.1);
       }
 
-      .tag {
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        color: var(--ink);
+        font-size: 1.12rem;
+        font-weight: 500;
+        letter-spacing: -0.03em;
+        text-decoration: none;
+      }
+
+      .brand-mark {
+        position: relative;
         display: inline-block;
-        padding: 0.35rem 0.8rem;
+        width: 2rem;
+        height: 2rem;
+        border: 1px solid rgba(200, 185, 154, 0.38);
+        border-radius: 0.35rem;
+        background: #27231d;
+      }
+
+      .brand-mark span {
+        position: absolute;
+        width: 0.37rem;
+        height: 0.37rem;
+        border-radius: 50%;
+        background: var(--blue);
+      }
+
+      .brand-mark span:nth-child(1) { top: 0.48rem; left: 0.48rem; }
+      .brand-mark span:nth-child(2) { top: 0.48rem; right: 0.48rem; background: var(--ink); }
+      .brand-mark span:nth-child(3) { bottom: 0.48rem; left: 0.81rem; background: var(--ink); }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        color: var(--ink-soft);
+        font-size: 0.9rem;
+      }
+
+      .nav-links a,
+      .text-link {
+        text-decoration: none;
+      }
+
+      .nav-links a:hover,
+      .text-link:hover,
+      footer a:hover {
+        color: var(--blue);
+      }
+
+      .nav-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.45rem 0.7rem;
+        border: 1px solid #3c372f;
+        border-radius: var(--radius-sm);
+        color: var(--ink);
+        background: transparent;
+        font-size: 0.84rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: transform 160ms ease, background 160ms ease;
+      }
+
+      .nav-cta:hover {
+        border-color: #61584a;
+        background: #24211c;
+      }
+
+      .hero {
+        padding: 2.5rem 0 0;
+      }
+
+      .hero-shell {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 0.83fr) minmax(0, 1.17fr);
+        gap: 2.5rem;
+        min-height: 540px;
+        overflow: hidden;
+        padding: clamp(2rem, 5vw, 4rem);
         border: 1px solid var(--line);
-        border-radius: 999px;
-        color: var(--muted);
-        background: rgba(28, 28, 30, 0.7);
-        letter-spacing: 0.04em;
-        font-size: 0.78rem;
+        border-radius: var(--radius-lg);
+        color: var(--white);
+        background: #1c1c1e;
+        box-shadow: none;
+      }
+
+      .hero-shell::after {
+        display: none;
+      }
+
+      .hero-copy {
+        position: relative;
+        z-index: 1;
+        align-self: center;
+        padding-bottom: 0;
+      }
+
+      .eyebrow,
+      .section-kicker,
+      .media-label,
+      .hero-caption,
+      .download-label {
         text-transform: uppercase;
+        letter-spacing: 0.13em;
+        font-size: 0.68rem;
+        font-weight: 500;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        margin: 0 0 1.25rem;
+        color: var(--ink-soft);
+      }
+
+      .eyebrow-dot {
+        width: 0.45rem;
+        height: 0.45rem;
+        border-radius: 50%;
+        background: var(--blue);
+        box-shadow: 0 0 0 0.28rem rgba(200, 185, 154, 0.14);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-weight: 500;
       }
 
       h1 {
-        margin: 1rem 0 0.75rem;
-        font-size: clamp(2.1rem, 5.8vw, 4.5rem);
-        line-height: 1.02;
         max-width: 16ch;
+        margin-bottom: 1.1rem;
+        font-size: clamp(2.4rem, 5vw, 3.8rem);
+        font-weight: 500;
+        line-height: 1.03;
+        letter-spacing: -0.045em;
       }
 
-      .lead {
-        max-width: 58ch;
-        font-size: clamp(1rem, 1.6vw, 1.25rem);
-        line-height: 1.6;
+      h1 em {
+        color: inherit;
+        font-style: normal;
+      }
+
+      .hero-lead {
+        max-width: 35rem;
+        margin-bottom: 1.75rem;
         color: #e3d8c4;
+        font-size: 1rem;
+        line-height: 1.65;
       }
 
-      .cta-row {
+      .button-row {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.85rem;
-        margin-top: 1.7rem;
+        align-items: center;
+        gap: 0.65rem 0.9rem;
       }
 
-      .btn {
+      .button {
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
-        text-decoration: none;
-        border-radius: 0.75rem;
-        padding: 0.78rem 1.05rem;
+        justify-content: center;
+        gap: 0.55rem;
+        min-height: 2.65rem;
+        padding: 0.62rem 0.9rem;
         border: 1px solid transparent;
-        transition: transform 140ms ease, border-color 140ms ease, opacity 140ms ease;
+        border-radius: var(--radius-sm);
+        font-size: 0.84rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
       }
 
-      .btn:hover {
-        transform: translateY(-1px);
+      .button:hover {
+        transform: none;
       }
 
-      .btn-primary {
-        background: var(--accent);
+      .button-primary {
         color: #17130c;
-        font-weight: 600;
+        background: var(--blue);
       }
 
-      .btn-secondary {
+      .button-primary:hover {
+        background: #d3c6aa;
+      }
+
+      .button-quiet {
+        color: var(--ink);
         border-color: #3c372f;
         background: rgba(28, 28, 30, 0.8);
-        color: var(--text);
       }
 
-      section {
-        margin: 2.2rem 0;
-        padding: 1.2rem;
-        border: 1px solid var(--line);
-        border-radius: 1rem;
-        background: rgba(20, 20, 22, 0.8);
+      .button-quiet:hover {
+        border-color: #61584a;
+        background: rgba(44, 40, 33, 0.9);
       }
 
-      h2 {
-        margin-top: 0;
-        margin-bottom: 0.9rem;
-        font-size: 1.1rem;
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0.9rem;
-      }
-
-      .card {
-        padding: 1rem;
-        border: 1px solid #343438;
-        border-radius: 0.85rem;
-        background: var(--bg-soft);
-      }
-
-      .card strong {
-        display: block;
-        margin-bottom: 0.35rem;
-        color: var(--accent);
-      }
-
-      .status {
-        margin-top: 0.9rem;
-        color: var(--ok);
-        font-weight: 600;
-      }
-
-      .build-details {
+      .hero-details {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.55rem 1rem;
-        margin: 1rem 0;
-        color: var(--muted);
+        gap: 0.5rem 1rem;
+        margin: 2.2rem 0 0;
+        color: var(--ink-faint);
+        font-size: 0.77rem;
       }
 
+      .hero-details span + span::before {
+        margin-right: 1rem;
+        color: #6c655a;
+        content: "•";
+      }
+
+      .hero-stage {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 0;
+      }
+
+      .screen-card {
+        position: relative;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 0.707;
+        overflow: hidden;
+        border: 0.62rem solid #181818;
+        border-radius: 1.15rem;
+        background: #090909;
+        box-shadow: 0 0 0 1px #383838, 0 0.8rem 1.5rem rgba(0, 0, 0, 0.28);
+      }
+
+      .screen-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top;
+      }
+
+      .screen-card::before,
+      .media-shell::before,
+      .ipad-frame::before {
+        position: absolute;
+        top: 0.22rem;
+        left: 50%;
+        z-index: 4;
+        width: 0.32rem;
+        height: 0.32rem;
+        border: 1px solid #050505;
+        border-radius: 50%;
+        background: #3a3a3a;
+        box-shadow: inset 0 0 0 1px #242424;
+        content: "";
+        transform: translateX(-50%);
+      }
+
+      .screen-card-primary {
+        position: relative;
+        width: min(76%, 330px);
+        height: auto;
+        margin: 0;
+      }
+
+      .screen-card::after {
+        display: none;
+      }
+
+      .screen-card-primary figcaption {
+        margin: 0.75rem 0.2rem 0;
+        color: var(--ink-soft);
+      }
+
+      .screen-card-primary figcaption strong,
+      .screen-card-primary figcaption span {
+        display: block;
+      }
+
+      .screen-card-primary figcaption strong {
+        margin-bottom: 0.18rem;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--ink);
+      }
+
+      .screen-card-primary figcaption span {
+        color: var(--ink-faint);
+        font-size: 0.7rem;
+      }
+
+      .section-intro {
+        max-width: 760px;
+        padding: 5rem 0 2rem;
+      }
+
+      .section-kicker,
+      .media-label,
+      .download-label {
+        margin-bottom: 0.9rem;
+        color: var(--blue);
+      }
+
+      .section-intro h2,
+      .download-copy h2 {
+        margin-bottom: 1rem;
+        font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+        line-height: 1.1;
+        letter-spacing: -0.035em;
+      }
+
+      .section-intro p,
+      .story-copy > p,
+      .download-copy > p {
+        color: var(--ink-soft);
+        font-size: 0.98rem;
+        line-height: 1.65;
+      }
+
+      .story-row {
+        display: grid;
+        grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+        align-items: center;
+        gap: clamp(2.5rem, 6vw, 5rem);
+        margin: 2rem auto 6rem;
+      }
+
+      .story-row.reverse .story-media {
+        order: 2;
+      }
+
+      .story-row.reverse .story-copy {
+        order: 1;
+      }
+
+      .story-copy {
+        max-width: 34rem;
+      }
+
+      .story-copy .number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.8rem;
+        height: 1.8rem;
+        margin-bottom: 1rem;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        color: var(--blue);
+        font-size: 0.78rem;
+        font-weight: 500;
+      }
+
+      .story-copy h3,
+      .context-copy h3 {
+        margin-bottom: 0.8rem;
+        font-size: clamp(1.55rem, 2.5vw, 2.15rem);
+        line-height: 1.12;
+        letter-spacing: -0.035em;
+      }
+
+      .feature-points {
+        display: grid;
+        gap: 0.55rem;
+        margin: 1.2rem 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .feature-points li {
+        display: flex;
+        gap: 0.65rem;
+        color: var(--ink-soft);
+        font-size: 0.86rem;
+        line-height: 1.5;
+      }
+
+      .feature-points li::before {
+        flex: 0 0 auto;
+        width: 0.42rem;
+        height: 0.42rem;
+        margin-top: 0.43rem;
+        border-radius: 50%;
+        background: var(--blue);
+        content: "";
+      }
+
+      .media-shell {
+        position: relative;
+        overflow: hidden;
+        padding: 0.55rem;
+        border: 0.62rem solid #181818;
+        border-radius: 1.15rem;
+        background: #090909;
+        box-shadow: 0 0 0 1px #383838, 0 0.8rem 1.5rem rgba(0, 0, 0, 0.28);
+      }
+
+      .media-shell img {
+        width: 100%;
+        aspect-ratio: 0.707;
+        object-fit: cover;
+        object-position: top;
+        border-radius: 0.65rem;
+      }
+
+      .media-label {
+        margin: 0.9rem 0 0 0.25rem;
+        color: var(--ink-faint);
+        font-size: 0.68rem;
+      }
+
+      .story-row:first-of-type .story-media {
+        max-width: 410px;
+        justify-self: center;
+      }
+
+      .story-row.reverse .story-media {
+        max-width: 470px;
+        justify-self: end;
+      }
+
+      .context-section {
+        display: grid;
+        grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+        align-items: center;
+        gap: clamp(2.5rem, 6vw, 5rem);
+        margin-bottom: 6rem;
+        padding: clamp(1.5rem, 4vw, 2.75rem);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: var(--warm);
+      }
+
+      .context-copy > p {
+        max-width: 32rem;
+        color: var(--ink-soft);
+        font-size: 1rem;
+        line-height: 1.7;
+      }
+
+      .context-copy .section-kicker {
+        color: var(--blue);
+      }
+
+      .context-copy h3 {
+        max-width: 12ch;
+      }
+
+      .context-media {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      .context-media figure,
+      .discovery-media figure,
+      .composer-media figure {
+        margin: 0;
+      }
+
+      .ipad-frame {
+        position: relative;
+        overflow: hidden;
+        padding: 0.55rem;
+        border: 0.62rem solid #181818;
+        border-radius: 1.15rem;
+        background: #090909;
+        box-shadow: 0 0 0 1px #383838, 0 0.8rem 1.5rem rgba(0, 0, 0, 0.28);
+      }
+
+      .context-media figure:nth-child(2) {
+        margin-top: 3.5rem;
+      }
+
+      .context-media img,
+      .discovery-media img,
+      .composer-media img {
+        width: 100%;
+        aspect-ratio: 0.707;
+        object-fit: cover;
+        object-position: top;
+        border: 0;
+        border-radius: 0.65rem;
+        box-shadow: none;
+      }
+
+      .context-media figcaption,
+      .discovery-media figcaption {
+        margin: 0.7rem 0.25rem 0;
+        color: var(--ink-faint);
+        font-size: 0.76rem;
+        line-height: 1.45;
+      }
+
+      .discovery-section {
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+        align-items: center;
+        gap: clamp(2.5rem, 6vw, 5rem);
+        margin-bottom: 6rem;
+      }
+
+      .discovery-media {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      .discovery-media figure:nth-child(2) {
+        margin-top: 3.5rem;
+      }
+
+      .discovery-copy {
+        max-width: 34rem;
+      }
+
+      .discovery-copy h3 {
+        max-width: 11ch;
+      }
+
+      .composer-section {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 0.78fr);
+        align-items: center;
+        gap: clamp(2.5rem, 6vw, 5rem);
+        margin-bottom: 6rem;
+        padding: clamp(1.5rem, 4vw, 2.75rem);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: rgba(28, 28, 30, 0.72);
+      }
+
+      .composer-copy h3 {
+        max-width: 11ch;
+      }
+
+      .composer-copy p {
+        max-width: 32rem;
+        color: var(--ink-soft);
+        line-height: 1.7;
+      }
+
+      .composer-media {
+        width: min(100%, 370px);
+        justify-self: end;
+      }
+
+      .download-section {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+        gap: 3rem;
+        margin-bottom: 4rem;
+        padding: clamp(1.5rem, 4vw, 2.75rem);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: var(--warm);
+      }
+
+      .download-copy h2 {
+        max-width: 10ch;
+      }
+
+      .download-copy > p {
+        max-width: 34rem;
+      }
+
+      .download-label {
+        color: var(--blue);
+      }
+
+      .download-card {
+        align-self: center;
+        padding: 1.5rem;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .download-card h3 {
+        margin-bottom: 0.45rem;
+        font-size: 1.25rem;
+        letter-spacing: -0.03em;
+      }
+
+      .download-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem 0.8rem;
+        margin-bottom: 1.25rem;
+        color: var(--ink-soft);
+        font-size: 0.76rem;
+      }
+
+      .download-card .button-primary {
+        color: #17130c;
+        background: var(--blue);
+      }
+
+      .download-card .button-primary:hover {
+        background: #d3c6aa;
+      }
+
+      .download-secondary {
+        display: inline-block;
+        margin-top: 1rem;
+        color: var(--blue);
+        font-size: 0.78rem;
+        font-weight: 500;
+        text-decoration: underline;
+        text-underline-offset: 0.2rem;
+      }
+
+      .download-note,
       .checksum {
         margin: 1rem 0 0;
-        color: var(--muted);
-        font-size: 0.86rem;
+        color: var(--ink-soft);
+        font-size: 0.72rem;
+        line-height: 1.55;
       }
 
       .checksum code {
         display: block;
-        margin-top: 0.4rem;
-        padding: 0.7rem;
+        margin-top: 0.35rem;
         overflow-wrap: anywhere;
-        border: 1px solid #343438;
-        border-radius: 0.65rem;
-        background: #0b0b0c;
-        color: var(--text);
+        color: var(--ink-soft);
         font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+        font-size: 0.68rem;
         user-select: all;
       }
 
-      .install-note {
-        color: var(--muted);
-        font-size: 0.92rem;
-        line-height: 1.55;
-      }
-
       footer {
-        padding: 2rem 0 3.5rem;
-        color: var(--muted);
-        font-size: 0.95rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0 0 3rem;
+        color: var(--ink-faint);
+        font-size: 0.78rem;
       }
 
-      @media (max-width: 860px) {
-        .grid {
+      footer p {
+        margin: 0;
+      }
+
+      footer nav {
+        display: flex;
+        gap: 1rem;
+      }
+
+      footer a {
+        text-decoration: none;
+      }
+
+      @media (max-width: 900px) {
+        .hero-shell {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .hero-copy {
+          max-width: 42rem;
+        }
+
+        .hero-stage {
+          max-width: 620px;
+          width: 100%;
+          margin: 1rem auto 0;
+        }
+
+        .context-section,
+        .discovery-section,
+        .download-section {
           grid-template-columns: 1fr;
         }
 
-        header {
-          padding-top: 3.5rem;
+        .context-copy,
+        .discovery-copy,
+        .download-copy {
+          max-width: 42rem;
+        }
+
+        .context-copy h3,
+        .discovery-copy h3,
+        .download-copy h2 {
+          max-width: 16ch;
+        }
+
+        .composer-media {
+          justify-self: start;
+        }
+      }
+
+      @media (max-width: 680px) {
+        .wrap {
+          width: min(100% - 1.5rem, 1080px);
+        }
+
+        .site-header {
+          padding: 1rem 0;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .nav-cta {
+          padding: 0.58rem 0.75rem;
+          font-size: 0.76rem;
+        }
+
+        .hero {
+          padding-top: 1rem;
+        }
+
+        .hero-shell {
+          min-height: 0;
+          padding: 2rem 1.25rem 1.25rem;
+          border-radius: var(--radius-md);
+        }
+
+        h1 {
+          font-size: clamp(2.3rem, 12vw, 3.2rem);
+        }
+
+        .hero-stage {
+          margin-top: 0.5rem;
+        }
+
+        .screen-card {
+          border-width: 0.4rem;
+        }
+
+        .screen-card-primary {
+          width: min(82%, 300px);
+          height: auto;
+        }
+
+        .screen-card-primary figcaption strong {
+          font-size: 0.76rem;
+        }
+
+        .screen-card-primary figcaption span {
+          font-size: 0.68rem;
+        }
+
+        .section-intro {
+          padding: 5rem 0 2rem;
+        }
+
+        .story-row,
+        .story-row.reverse {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+          margin-bottom: 5rem;
+        }
+
+        .story-row.reverse .story-media,
+        .story-row.reverse .story-copy {
+          order: initial;
+        }
+
+        .story-row:first-of-type .story-media,
+        .story-row.reverse .story-media {
+          max-width: 390px;
+          justify-self: center;
+        }
+
+        .context-section,
+        .composer-section,
+        .download-section {
+          margin-bottom: 5rem;
+          padding: 1.35rem;
+          border-radius: var(--radius-md);
+        }
+
+        .context-media,
+        .discovery-media {
+          gap: 0.6rem;
+        }
+
+        .context-media figure:nth-child(2),
+        .discovery-media figure:nth-child(2) {
+          margin-top: 2rem;
+        }
+
+        .composer-section {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+
+        .composer-media {
+          width: min(100%, 330px);
+          justify-self: center;
+        }
+
+        footer {
+          padding-bottom: 2rem;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .context-media,
+        .discovery-media {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+          width: min(100%, 330px);
+          margin-inline: auto;
+        }
+
+        .context-media figure:nth-child(2),
+        .discovery-media figure:nth-child(2) {
+          margin-top: 0;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          transition-duration: 0.01ms !important;
         }
       }
     </style>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LNYLSP17CC"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-LNYLSP17CC');
-</script>
-</head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LNYLSP17CC"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LNYLSP17CC');
+    </script>
+  </head>
   <body>
-    <div class="wrap">
-      <header>
-        <span class="tag">Android PDF Score Viewer</span>
-        <h1>Partita keeps your repertoire ready to perform.</h1>
-        <p class="lead">
-          Built for conservatory students and professional musicians, Partita gives Android a serious,
-          distraction-free score experience: fast imports, dark reading mode, and instant resume to your
-          last page.
-        </p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="downloads/partita-1.21-9.apk" download>Download Android APK</a>
-          <a class="btn btn-secondary" href="https://github.com/danbyumagic/partita" target="_blank" rel="noreferrer">View Source</a>
-        </div>
-      </header>
+    <header class="site-header">
+      <div class="wrap nav">
+        <a class="brand" href="#top" aria-label="Partita home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span>Partita</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary navigation">
+          <a href="#workflow">Workflow</a>
+        </nav>
+        <a class="nav-cta" href="#download">Download</a>
+      </div>
+    </header>
 
-      <section id="download">
-        <h2>Android Development Preview</h2>
-        <p>
-          Download the signed, optimized Partita 1.21 APK directly. This preview is intended for testing
-          before the Google Play release.
-        </p>
-        <div class="build-details" aria-label="Build details">
-          <span>Version 1.21 (build 9)</span>
-          <span>Android 8.0 or later</span>
-          <span>58.8 MiB</span>
-        </div>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="downloads/partita-1.21-9.apk" download>Download Partita 1.21</a>
-          <a class="btn btn-secondary" href="downloads/partita-1.21-9.apk.sha256">Checksum file</a>
-        </div>
-        <p class="install-note">
-          This APK is distributed outside Google Play. Android may ask you to allow installs from your
-          browser or Files app before installation.
-        </p>
-        <p class="checksum">
-          SHA-256
-          <code>dad8d9d87abfb7abb3f3007b3c7b124676e9e179865fe4f07b3954fda1cb2664</code>
-        </p>
-          <p class="status">Signed release build verified July 28, 2026</p>
-        </section>
+    <main id="top">
+      <section class="hero wrap" aria-labelledby="hero-title">
+        <div class="hero-shell">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Android score viewer · version 1.21</p>
+            <h1 id="hero-title">A score library <em>for serious musicians.</em></h1>
+            <p class="hero-lead">
+              Partita is an Android score library and annotation workspace for conservatory students and
+              professional musicians.
+            </p>
+            <div class="button-row">
+              <a class="button button-primary" href="downloads/partita-1.21-10.apk" download>Download Android APK</a>
+              <a class="button button-quiet" href="#workflow">See features</a>
+            </div>
+            <p class="hero-details" aria-label="Product details">
+              <span>PDF library</span>
+              <span>Annotations</span>
+              <span>Android 8.0+</span>
+            </p>
+          </div>
 
-      <section>
-        <h2>Why Partita</h2>
-        <div class="grid">
-          <article class="card">
-            <strong>Clean by design</strong>
-            Every element has a purpose. No visual noise, no ad clutter.
-          </article>
-          <article class="card">
-            <strong>Library first</strong>
-            Import PDF scores quickly and keep your collection organized.
-          </article>
-          <article class="card">
-            <strong>Performance flow</strong>
-            Reopen exactly where you left off with page progress memory.
-          </article>
+          <div class="hero-stage" aria-label="Partita score reader preview">
+            <figure class="screen-card-primary">
+              <div class="screen-card">
+                <img src="screenshots/annotated-score.jpg" alt="Annotated Ballade No. 3 score in the Partita reader with handwritten marks and the annotation toolbar visible" />
+              </div>
+              <figcaption>
+                <strong>Annotations</strong>
+                <span>Pen · highlighter · layers</span>
+              </figcaption>
+            </figure>
+          </div>
         </div>
       </section>
 
-      <section id="roadmap">
-        <h2>Current Build Status</h2>
+      <section class="section-intro wrap" id="workflow" aria-labelledby="workflow-title">
+        <p class="section-kicker">The Partita workflow</p>
+        <h2 id="workflow-title">A library, reader, and annotation workspace.</h2>
         <p>
-          The Android development build includes score import, library organization, multiple reading
-          layouts, annotations, setlists, performance tools, voice notes, backups, and IMSLP browsing.
-          Public-release testing and polish are still in progress.
+          Partita keeps the practical parts of score work together: find a piece, choose an edition,
+          make a mark, and return to the same page later.
         </p>
-        <p class="status">Status: Preview available; in active development</p>
       </section>
 
-      <footer>
-        Partita by Spencer Li. Static site hosted on GitHub Pages.
-        <br />
-        <a href="privacy.html">Privacy Policy</a>
-      </footer>
-    </div>
+      <section class="story-row wrap" aria-labelledby="library-title">
+        <div class="story-media">
+          <div class="media-shell">
+            <img src="screenshots/library-overview.jpg" alt="Partita All Scores library showing a searchable list of piano repertoire with composer and catalog information" loading="lazy" decoding="async" />
+          </div>
+          <p class="media-label">All Scores · search · filters</p>
+        </div>
+        <div class="story-copy">
+          <span class="number">01</span>
+          <h3 id="library-title">Know where the music is.</h3>
+          <p>
+            A library should help a musician think in works and repertoire, not filenames. Search by
+            title, composer, or catalog number, then narrow the view by instrument, period, work type,
+            or composer.
+          </p>
+          <ul class="feature-points">
+            <li>Keep multiple editions grouped under the same work.</li>
+            <li>Return to recent scores without rebuilding your context.</li>
+            <li>Organize a working library around the way you actually study.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="story-row reverse wrap" aria-labelledby="annotation-title">
+        <div class="story-media">
+          <div class="media-shell">
+            <img src="screenshots/annotated-score.jpg" alt="Partita annotation workspace showing blue fingerings, green marks, and yellow highlighting directly on a piano score" loading="lazy" decoding="async" />
+          </div>
+          <p class="media-label">Score reader · draw · saved annotations</p>
+        </div>
+        <div class="story-copy">
+          <span class="number">02</span>
+          <h3 id="annotation-title">Turn a page into a working document.</h3>
+          <p>
+            Make the fingering, phrase mark, reminder, or rehearsal cue where the music is. Partita’s
+            annotation tools are designed for quick practice decisions and durable score context.
+          </p>
+          <ul class="feature-points">
+            <li>Use pen, highlighter, color, erasing, and undo without leaving the score.</li>
+            <li>Keep marks available the next time you open the piece.</li>
+            <li>Use layers to separate personal practice from clean reference material.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="context-section wrap" aria-labelledby="context-title">
+        <div class="context-copy">
+          <p class="section-kicker">Score context</p>
+          <h3 id="context-title">Compare editions without losing the work.</h3>
+          <p>
+            Urtext, teacher-marked copy, performance edition—serious repertoire often needs more than
+            one view. Partita keeps editions together and lets a reference page sit beside the score you
+            are currently studying.
+          </p>
+          <ul class="feature-points">
+            <li>Choose a primary edition while keeping alternatives close.</li>
+            <li>Open a reference score without abandoning the current page.</li>
+          </ul>
+        </div>
+        <div class="context-media">
+          <figure>
+            <div class="ipad-frame">
+              <img src="screenshots/multiple-editions.jpg" alt="Partita edition picker showing two editions of Chopin Ballade No. 3" loading="lazy" decoding="async" />
+            </div>
+            <figcaption>Multiple editions, one work.</figcaption>
+          </figure>
+          <figure>
+            <div class="ipad-frame">
+              <img src="screenshots/reference-score-window.jpg" alt="Partita reference score window opened over an annotated Ballade score" loading="lazy" decoding="async" />
+            </div>
+            <figcaption>Keep the reference in view.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="discovery-section wrap" aria-labelledby="discovery-title">
+        <div class="discovery-media">
+          <figure>
+            <div class="ipad-frame">
+              <img src="screenshots/imslp-search.jpg" alt="Partita IMSLP search results for nocturnes, with filters and suggested works" loading="lazy" decoding="async" />
+            </div>
+            <figcaption>Search by work, composer, and catalog context.</figcaption>
+          </figure>
+          <figure>
+            <div class="ipad-frame">
+              <img src="screenshots/imslp-work.jpg" alt="Partita IMSLP work page for Chopin Nocturnes showing available public-domain scores and import buttons" loading="lazy" decoding="async" />
+            </div>
+            <figcaption>Inspect sources before importing.</figcaption>
+          </figure>
+        </div>
+        <div class="discovery-copy">
+          <span class="number">03</span>
+          <h3 id="discovery-title">Find the work, then choose the right source.</h3>
+          <p>
+            Repertoire discovery is part of the musician’s job. Partita connects IMSLP browsing with a
+            structured view of works, editions, and public-domain scores so that finding the next piece
+            does not mean starting over in another app.
+          </p>
+          <ul class="feature-points">
+            <li>Browse suggested works and search results in one place.</li>
+            <li>Review edition details before adding a score to the library.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="composer-section wrap" aria-labelledby="composer-title">
+        <div class="composer-copy">
+          <span class="number">04</span>
+          <h3 id="composer-title">Browse repertoire by composer, not by filename.</h3>
+          <p>
+            A repertoire library often starts with a composer, a period, or a course list. Partita gives
+            those relationships a visible place, making it easier to move from a broad repertoire view to
+            the exact piece you want to teach or practice.
+          </p>
+        </div>
+        <div class="composer-media">
+          <figure>
+            <div class="ipad-frame">
+              <img src="screenshots/composer-browse.jpg" alt="Partita Composers view listing Edvard Grieg, Frédéric Chopin, Johann Sebastian Bach, Ludwig van Beethoven, and Maurice Ravel" loading="lazy" decoding="async" />
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <section class="download-section wrap" id="download" aria-labelledby="download-title">
+        <div class="download-copy">
+          <p class="download-label">Current Android preview</p>
+          <h2 id="download-title">Try Partita with your next score.</h2>
+          <p>
+            The current build is distributed directly while public-release testing continues. Download
+            it, import a PDF, and see how your repertoire feels when the library is built around the work.
+          </p>
+        </div>
+        <div class="download-card">
+          <h3>Partita 1.21 · build 10</h3>
+          <div class="download-meta" aria-label="Download details">
+            <span>Android 8.0+</span>
+            <span>58.9 MiB</span>
+            <span>Signed release build</span>
+          </div>
+          <a class="button button-primary" href="downloads/partita-1.21-10.apk" download>Download Partita 1.21 <span aria-hidden="true">↓</span></a>
+          <a class="download-secondary" href="downloads/partita-1.21-10.apk.sha256">View SHA-256 checksum</a>
+          <p class="download-note">
+            Android may ask you to allow installs from your browser or Files app. Build verified August 9,
+            2026.
+          </p>
+          <p class="checksum">
+            SHA-256
+            <code>9f5fba20af9eec15198a224856c11684e7439c108f2482c2ce21e2d0befed32c</code>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="wrap">
+      <p>Partita by Daniel Jensen · A score workspace for serious musicians.</p>
+      <nav aria-label="Footer navigation">
+        <a href="privacy.html">Privacy</a>
+      </nav>
+    </footer>
   </body>
 </html>
